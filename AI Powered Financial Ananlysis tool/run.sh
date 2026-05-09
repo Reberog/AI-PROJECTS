@@ -19,3 +19,5 @@ echo "Frontend: http://localhost:8501"
 
 # Wait for both processes
 wait $BACKEND_PID $FRONTEND_PID
+
+##
