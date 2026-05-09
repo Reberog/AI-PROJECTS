@@ -296,7 +296,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 **Arpan Anand**
 - GitHub: [@arpananand](https://github.com/arpananand)
 - LinkedIn: [linkedin.com/in/arpananand](https://linkedin.com/in/arpananand)
-- Email: contact@arpananand.com
+- Email: arpan.anand.official@gmail.com
 
 ---
 
