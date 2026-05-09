@@ -11,7 +11,7 @@ graph TD
     
     subgraph External_Services [External Services]
         YF_Search[🔍 Yahoo Finance Search API]
-        YF_Data[📈 Yahoo Finance Data (yfinance)]
+        YF_Data["📈 Yahoo Finance Data - yfinance"]
         Gemini[🧠 Google Gemini AI]
     end
 
