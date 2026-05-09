@@ -28,21 +28,21 @@ graph TD
     
     Backend -->|3. Resolve Name| Resolver
     Resolver -->|Search Query| YF_Search
-    YF_Search -->|Ticker Symbol (e.g., RELIANCE.NS)| Resolver
+    YF_Search -->|Ticker Symbol - e.g. RELIANCE.NS| Resolver
     
     Resolver -->|Resolved Ticker| Fetcher
     Fetcher -->|Request History| YF_Data
     YF_Data -->|OHLCV Data| Fetcher
     
     Fetcher -->|Raw Data| Calculator
-    Calculator -->|Calculate RSI, MACD, BB, etc.| Calculator
+    Calculator -->|Calculate RSI, MACD, BB, etc| Calculator
     
     Calculator -->|Enriched Data| Analyzer
     Analyzer -->|Construct Prompt| Gemini
-    Gemini -->|AI Analysis & Trade Setup| Analyzer
+    Gemini -->|AI Analysis and Trade Setup| Analyzer
     
     Analyzer -->|Final Response| Backend
-    Backend -->|JSON (Data + Analysis)| Frontend
+    Backend -->|JSON with Data and Analysis| Frontend
     Frontend -->|4. Display Table & Report| User
 
     %% Styling
