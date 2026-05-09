@@ -72,3 +72,6 @@ Thumbs.db
 *.swp
 temp/
 tmp/
+
+# Internal Documentation (not for public repo)
+GITHUB_SETUP_GUIDE.md
