@@ -1,0 +1,96 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build static site
+        run: npm run build
+        env:
+          NODE_ENV: production
+
+      - name: Prepare dist folder
+        run: |
+          # Ensure dist exists
+          if [ ! -d "dist" ]; then
+            echo "Error: dist folder not created by build!"
+            exit 1
+          fi
+          
+          # Copy API data to dist
+          if [ -d "public/api" ]; then
+            mkdir -p dist/api
+            cp -r public/api/* dist/api/
+          fi
+          
+          # Copy other public assets if they exist (skip errors)
+          if [ -d "public" ]; then
+            find public -maxdepth 1 -type f -exec cp {} dist/ \; 2>/dev/null || true
+          fi
+          
+          # Create .nojekyll to disable Jekyll processing - CRITICAL!
+          touch dist/.nojekyll
+          echo "✅ Created .nojekyll in dist/"
+          
+          # Verify the build
+          echo ""
+          echo "📦 Files in dist/:"
+          ls -la dist/ | head -15
+          echo ""
+          echo "📄 Checking index.html..."
+          if [ -f "dist/index.html" ]; then
+            if grep -q "/assets/" dist/index.html; then
+              echo "✅ index.html looks good (has /assets/ paths)"
+            else
+              echo "⚠️ Warning: index.html might not have correct paths"
+            fi
+          else
+            echo "❌ ERROR: dist/index.html not found!"
+            exit 1
+          fi
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: './dist'
+
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
